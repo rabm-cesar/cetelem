@@ -242,7 +242,7 @@
                 const data = teamData[cardId];
                 if (data) {
                     let responsibilitiesHtml = data.responsibilities.map(r => 
-                        <li class="flex items-start"><span class="text-indigo-500 mr-3 mt-1">◆</span><span>${r}</span></li>
+                        `<li class="flex items-start"><span class="text-indigo-500 mr-3 mt-1">◆</span><span>${r}</span></li>`
                     ).join('');
 
                     detalhesContent.innerHTML = `
