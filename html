@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrutura da Equipe - Cetelem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: A aplicação foi estruturada como um painel interativo de página única. A seção principal é um organograma visual, onde cada cargo é um cartão clicável. Clicar em um cartão revela as responsabilidades detalhadas em um painel dedicado, evitando sobrecarga de informação. A estrutura foi escolhida por ser mais intuitiva e envolvente do que uma lista de texto, permitindo que o usuário explore a hierarquia e as tarefas de forma não linear, focando no que lhe interessa. -->
+    <!-- Visualization & Content Choices: Hierarquia -> Organizar -> Organograma com HTML/Tailwind -> Interação de clique para ver detalhes -> Justificativa: Visualmente superior a uma lista, promove exploração. Demais responsabilidades -> Informar -> Listas de texto -> Reveladas ao clicar -> Justificativa: Apresentação clara e concisa, sem poluir a tela inicial. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #4a4a4a;
+        }
+        .organogram-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .organogram-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .organogram-card.selected {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        .connector {
+            position: absolute;
+            background-color: #d1d5db;
+            z-index: -1;
+        }
+        .connector.vertical {
+            width: 2px;
+        }
+        .connector.horizontal {
+            height: 2px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Nova Estrutura da Equipe</h1>
+            <p class="mt-2 text-lg text-gray-600">Cetelem - Organograma Interativo e Funções</p>
+        </header>
+
+        <main>
+            <section id="organograma" class="mb-12">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-700">Organograma da Equipe</h2>
+                    <p class="text-gray-500 mt-1">Clique em um cargo para ver detalhes sobre suas responsabilidades.</p>
+                </div>
+
+                <div class="relative flex flex-col items-center p-6 space-y-8">
+                    
+                    <div id="card-socio" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-64 text-center">
+                        <p class="font-bold text-indigo-700">Sócio</p>
+                        <p class="text-gray-600">SMG</p>
+                    </div>
+
+                    <div class="connector vertical" style="height: 30px; top: 104px;"></div>
+
+                    <div id="card-coordenador" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-64 text-center" style="margin-top: 30px;">
+                        <p class="font-bold text-indigo-600">Coordenador</p>
+                        <p class="text-gray-600">Cylsse</p>
+                    </div>
+
+                    <div class="connector vertical" style="height: 30px; top: 208px;"></div>
+                    <div class="connector horizontal" style="width: 60%; top: 238px; left: 20%;"></div>
+
+                    <div class="w-full flex justify-center items-start gap-4 md:gap-8 flex-wrap" style="margin-top: 60px;">
+                        
+                        <div class="flex flex-col items-center relative">
+                            <div class="connector vertical" style="height: 30px; bottom: 100%;"></div>
+                            <div id="card-lider" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-56 text-center">
+                                <p class="font-semibold text-purple-700">Líder de Equipe</p>
+                                <p class="text-gray-600">Danielle</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center relative">
+                            <div class="connector vertical" style="height: 30px; bottom: 100%;"></div>
+                            <div id="card-assistente" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-56 text-center">
+                                <p class="font-semibold text-purple-700">Assistente de Liderança</p>
+                                <p class="text-gray-600">Vinicius</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center relative">
+                            <div class="connector vertical" style="height: 30px; bottom: 100%;"></div>
+                             <div id="card-estrategico" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-56 text-center">
+                                <p class="font-semibold text-purple-700">Estratégico</p>
+                                <p class="text-gray-600">Erisson</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="connector vertical" style="height: 40px; top: 402px;"></div>
+                    <div class="connector horizontal" style="width: 80%; top: 442px; left: 10%;"></div>
+
+                    <div class="w-full flex justify-center items-start gap-4 md:gap-8 flex-wrap" style="margin-top: 70px;">
+                        <div class="flex flex-col items-center relative">
+                             <div class="connector vertical" style="height: 40px; bottom: 100%;"></div>
+                            <div id="card-advogados" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-56 text-center">
+                                <p class="font-semibold text-teal-700">Advogados</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center relative">
+                             <div class="connector vertical" style="height: 40px; bottom: 100%;"></div>
+                            <div id="card-assistentes" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-56 text-center">
+                                <p class="font-semibold text-teal-700">Assistentes</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center relative">
+                             <div class="connector vertical" style="height: 40px; bottom: 100%;"></div>
+                            <div id="card-estagiarios" class="organogram-card bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-56 text-center">
+                                <p class="font-semibold text-teal-700">Estagiários</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="detalhes-funcao" class="bg-white rounded-xl shadow-lg p-6 md:p-8 min-h-[200px] flex items-center justify-center transition-all duration-300 ease-in-out">
+                 <div id="detalhes-content" class="text-center">
+                    <h3 class="text-xl font-bold text-gray-700">Detalhes da Função</h3>
+                    <p class="text-gray-500 mt-2">Selecione um cargo no organograma acima para ver suas responsabilidades.</p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-12 py-6 border-t">
+            <p class="text-gray-500">Estrutura da Equipe Cetelem</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const teamData = {
+            socio: {
+                title: 'Sócio',
+                name: 'SMG',
+                responsibilities: ['Supervisão geral e decisões estratégicas de alto nível.']
+            },
+            coordenador: {
+                title: 'Coordenador',
+                name: 'Cylsse',
+                responsibilities: ['Coordenação geral das equipes e projetos, garantindo alinhamento com os objetivos da empresa.']
+            },
+            lider: {
+                title: 'Líder de Equipe',
+                name: 'Danielle',
+                responsibilities: [
+                    'Planilhas e pedidos do cliente',
+                    'Monitoramento',
+                    'Treinamentos novatos',
+                    'Publicação 30%',
+                    'Emails (pagamentos)',
+                    'Analisar Alteração do Polo'
+                ]
+            },
+            assistente: {
+                title: 'Assistente de Liderança',
+                name: 'Vinicius',
+                responsibilities: [
+                    'Divir subs Djur',
+                    'Baixar OBFs Djur',
+                    'Auxiliar Erisson no estratégico',
+                    'Analisar Alteração do Polo',
+                    'Publicação quando necessário',
+                    'Auxiliar Dani nos treinamentos',
+                    'Auxiliar Dani Nas planilhas'
+                ]
+            },
+            estrategico: {
+                title: 'Estratégico',
+                name: 'Erisson',
+                responsibilities: [
+                    'Foco em atividades estratégicas para o crescimento e eficiência da operação.'
+                ]
+            },
+            advogados: {
+                title: 'Advogados',
+                name: '',
+                responsibilities: [
+                    '<strong>VPB:</strong> Publicação 70%',
+                    '<strong>ELF:</strong> Estratégico',
+                    '<strong>MEDC:</strong> Padrinho dos estagiários'
+                ]
+            },
+            assistentes: {
+                title: 'Assistentes',
+                name: '',
+                responsibilities: [
+                    'Suporte geral às atividades da equipe, auxiliando em tarefas administrativas e operacionais.'
+                ]
+            },
+            estagiarios: {
+                title: 'Estagiários',
+                name: '',
+                responsibilities: [
+                    'Aprendizado e suporte nas tarefas diárias, com orientação dos advogados e líderes.'
+                ]
+            }
+        };
+
+        const detalhesContent = document.getElementById('detalhes-content');
+        const cards = document.querySelectorAll('.organogram-card');
+        let selectedId = null;
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const cardId = card.id.replace('card-', '');
+                
+                cards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+
+                const data = teamData[cardId];
+                if (data) {
+                    let responsibilitiesHtml = data.responsibilities.map(r => 
+                        <li class="flex items-start"><span class="text-indigo-500 mr-3 mt-1">◆</span><span>${r}</span></li>
+                    ).join('');
+
+                    detalhesContent.innerHTML = `
+                        <h3 class="text-xl font-bold text-gray-800">${data.title} ${data.name ? ` - ${data.name}` : ''}</h3>
+                        <p class="text-gray-500 mt-2 mb-4">Principais Responsabilidades:</p>
+                        <ul class="text-left space-y-2 text-gray-700 inline-block max-w-md">
+                            ${responsibilitiesHtml}
+                        </ul>
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
